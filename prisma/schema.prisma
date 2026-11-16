@@ -1,0 +1,203 @@
+// Prisma 7: URL database ada di prisma.config.ts, client dibuat ke src/generated/prisma.
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  ADMIN
+  SELLER
+  BUYER
+}
+
+enum UserStatus {
+  ACTIVE
+  SUSPENDED
+}
+
+enum ApprovalStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  SUSPENDED
+}
+
+// ---------- Pengguna (User/Session/Account/Verification mengikuti skema Better Auth) ----------
+model User {
+  id            String     @id @default(cuid())
+  name          String
+  email         String     @unique // selalu huruf kecil
+  emailVerified Boolean    @default(false)
+  image         String?
+  role          Role       @default(BUYER)
+  status        UserStatus @default(ACTIVE)
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+
+  sessions      Session[]
+  accounts      Account[]
+  sellerProfile SellerProfile?
+  favorites     Favorite[]
+  reviews       Review[]
+  orderClicks   OrderClick[]
+  auditLogs     AuditLog[]
+
+  @@index([role, status])
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  expiresAt DateTime
+  token     String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model Account {
+  id                    String    @id @default(cuid())
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  @@index([userId])
+}
+
+model Verification {
+  id         String   @id @default(cuid())
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([identifier])
+}
+
+// ---------- Toko dan produk ----------
+model SellerProfile {
+  id             String         @id @default(cuid())
+  userId         String         @unique
+  user           User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  storeName      String
+  slug           String         @unique
+  description    String?
+  city           String?
+  whatsapp       String // format 62xxxxxxxxxx
+  approvalStatus ApprovalStatus @default(PENDING)
+  reviewNote     String?
+  reviewedAt     DateTime?
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+
+  products Product[]
+
+  @@index([approvalStatus])
+}
+
+model Category {
+  id        String    @id @default(cuid())
+  name      String    @unique
+  slug      String    @unique
+  sortOrder Int       @default(0)
+  products  Product[]
+}
+
+model Product {
+  id            String        @id @default(cuid())
+  sellerId      String
+  seller        SellerProfile @relation(fields: [sellerId], references: [id], onDelete: Cascade)
+  categoryId    String
+  category      Category      @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+  name          String
+  nameKey       String // name huruf kecil, untuk keunikan per seller
+  description   String
+  price         Int // rupiah, 1..1.000.000.000
+  stock         Int // 0..1.000.000
+  featured      Boolean       @default(false)
+  imageUrl      String? // URL Vercel Blob
+  isActive      Boolean       @default(true) // diatur seller
+  hiddenByAdmin Boolean       @default(false) // moderasi admin
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  favorites   Favorite[]
+  reviews     Review[]
+  orderClicks OrderClick[]
+
+  @@unique([sellerId, nameKey])
+  @@index([categoryId])
+  @@index([isActive, hiddenByAdmin])
+}
+
+// ---------- Aktivitas pembeli ----------
+model Favorite {
+  userId    String
+  productId String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@id([userId, productId])
+}
+
+model Review {
+  id        String   @id @default(cuid())
+  userId    String
+  productId String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  rating    Int // 1..5, dicek di aplikasi
+  comment   String?
+  hidden    Boolean  @default(false) // moderasi admin
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, productId])
+  @@index([productId])
+}
+
+// Statistik klik "Pesan lewat WhatsApp". Bukan catatan pesanan atau transaksi.
+model OrderClick {
+  id        String   @id @default(cuid())
+  productId String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  createdAt DateTime @default(now())
+
+  @@index([productId, createdAt])
+}
+
+model AuditLog {
+  id         String   @id @default(cuid())
+  actorId    String?
+  actor      User?    @relation(fields: [actorId], references: [id], onDelete: SetNull)
+  action     String // contoh: seller.approve, user.suspend, product.hide
+  entityType String
+  entityId   String
+  meta       Json?
+  createdAt  DateTime @default(now())
+
+  @@index([createdAt])
+  @@index([entityType, entityId])
+}

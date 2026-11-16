@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Katalog – NistoKopi</title>
+<meta name="description" content="Katalog digital biji kopi khas Banyuwangi. Pesan lewat WhatsApp. Prototipe dengan data contoh.">
+<meta name="theme-color" content="#2a1a10">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%E2%98%95%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --w:#fff;--b:#6f4e37;--b2:#563a28;--ink:#2a1a10;--paper:#faf6f1;--tint:#f1e8dc;--line:#e2d5c5;--mute:#6b5646;--gold:#c8924f;--ok:#5c7a3a;--err:#a1301f;
+  --s1:4px;--s2:8px;--s3:16px;--s4:24px;--s5:32px;--s6:40px;--s7:48px;--s8:64px;--s9:80px;
+  --serif:"Fraunces",Georgia,"Times New Roman",serif;
+  --sans:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif;
+  color-scheme:light;
+  box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + var(--s9));background:var(--paper)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 16px/26px var(--sans);accent-color:var(--b)}
+h1,h2,h3{font-family:var(--serif);font-weight:600;margin:0}
+button,input,select,textarea{font:inherit;color:inherit}
+::placeholder{color:var(--mute);opacity:1}
+:focus-visible{outline:3px solid var(--b);outline-offset:2px}
+.wrap{max-width:1280px;margin:0 auto;padding:0 var(--s4)}
+.strip{background:var(--ink);color:#e9d9c6;text-align:center;font-size:13px;line-height:var(--s4);padding:var(--s1) var(--s3)}
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:rgba(250,246,241,.92);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:var(--s3);min-height:72px;flex-wrap:wrap}
+.brand{display:inline-flex;align-items:center;gap:12px;font:700 26px/32px var(--serif);letter-spacing:-.01em;color:var(--ink)}
+.brand::before{content:"";width:16px;height:25px;border-radius:50%;transform:rotate(28deg);background:linear-gradient(90deg,transparent 45%,var(--gold) 45% 55%,transparent 55%),var(--b)}
+nav{display:flex;gap:var(--s1);background:var(--tint);padding:var(--s1);border-radius:999px}
+nav a{color:var(--b);text-decoration:none;display:inline-flex;align-items:center;min-height:40px;padding:0 20px;border-radius:999px;font-weight:600;font-size:15px;transition:background .15s,color .15s}
+nav a:hover{background:rgba(111,78,55,.1)}
+nav a[aria-current="page"]{background:var(--b);color:var(--w)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--paper);z-index:10}
+main{padding:var(--s4) 0 var(--s9)}
+.view[hidden]{display:none}
+.crumbs{display:flex;align-items:center;flex-wrap:wrap;gap:var(--s2);font-size:14px;color:var(--mute);margin:0 0 var(--s3)}
+.crumbs a{color:inherit}
+.crumbs [aria-current]{font-weight:600;color:var(--ink)}
+.hero{margin-bottom:var(--s5)}
+.hero h1{font-size:clamp(30px,4vw,44px);line-height:1.1;letter-spacing:-.02em}
+.hero p{max-width:60ch;margin:var(--s3) 0 0;color:var(--mute)}
+#view-katalog .hero{position:relative;overflow:hidden;background:var(--ink);color:#f6ede2;border-radius:24px;padding:var(--s9) var(--s7)}
+#view-katalog .hero::before{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-radial-gradient(circle at 92% 118%,transparent 0 26px,rgba(200,146,79,.34) 26px 27px);-webkit-mask-image:radial-gradient(circle at 92% 118%,#000 0,transparent 78%);mask-image:radial-gradient(circle at 92% 118%,#000 0,transparent 78%)}
+#view-katalog .hero>*{position:relative}
+#view-katalog .hero h1{font-size:clamp(36px,6vw,64px);max-width:12ch}
+#view-katalog .hero p{color:#dcc9b3;font-size:18px;line-height:28px;max-width:52ch;margin-top:var(--s4)}
+.catbar{border:0;margin:0 0 var(--s4);padding:0;min-width:0}
+#cat-list{display:flex;flex-wrap:wrap;gap:var(--s2)}
+#cat-list .chk{position:relative;min-height:44px;margin:0;padding:0 var(--s3);gap:0;border:1px solid var(--line);background:var(--w);border-radius:999px;font-size:15px;font-weight:500;color:var(--ink);cursor:pointer;white-space:nowrap;transition:background .15s,border-color .15s}
+#cat-list .chk:hover{border-color:var(--b)}
+#cat-list .stock{color:inherit;opacity:.7}
+#cat-list input{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:pointer}
+#cat-list label:has(input:checked){background:var(--b);border-color:var(--b);color:var(--w);font-weight:600}
+#cat-list label:has(input:focus-visible){outline:3px solid var(--b);outline-offset:2px}
+@media(max-width:640px){.wrap{padding:0 var(--s3)}#view-katalog .hero{padding:var(--s7) var(--s4);border-radius:20px}#cat-list{flex-wrap:nowrap;overflow-x:auto;padding-bottom:var(--s1)}}
+.count{margin:0 0 var(--s2);font-size:14px;color:var(--mute)}
+.toolbar{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s3);margin-bottom:var(--s4)}
+.toolbar .qbox{flex:1 1 260px}
+.toolbar .chk{min-height:var(--s7);margin:0;font-size:15px;cursor:pointer}
+.sortbox{display:flex;align-items:center;gap:var(--s2)}
+.sortbox label{margin:0;font-weight:500;font-size:15px;color:var(--mute)}
+input[type=text],input[type=number],input[type=search],select,textarea{width:100%;min-height:var(--s7);padding:var(--s2) var(--s3);border:1px solid var(--line);border-radius:12px;background:var(--w);color:var(--ink);font-size:15px;transition:border-color .15s}
+input[type=text]:hover,input[type=number]:hover,input[type=search]:hover,select:hover,textarea:hover{border-color:var(--b)}
+input[type=search]{padding-left:44px;background:var(--w) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%236f4e37' stroke-width='2' stroke-linecap='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='m20 20-3.5-3.5'/%3E%3C/svg%3E") no-repeat 14px center}
+select{width:auto;padding-right:var(--s4)}
+textarea{min-height:128px;resize:vertical}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:var(--s4)}
+.card{background:var(--w);border:1px solid var(--line);border-radius:18px;overflow:hidden;display:flex;flex-direction:column;transition:border-color .2s}
+.card:hover{border-color:var(--b)}
+.tile{aspect-ratio:4/3;background:radial-gradient(circle at 30% 25%,#f7eddf,#e4d0b6);display:flex;align-items:center;justify-content:center;font-size:60px;position:relative}
+.tile img{width:100%;height:100%;object-fit:cover;display:block}
+.badge{position:absolute;top:var(--s3);left:var(--s3);background:var(--gold);color:var(--ink);font-weight:700;font-size:13px;line-height:var(--s4);padding:2px 12px;border-radius:999px}
+.badge::before{content:"★ "}
+.body{padding:var(--s4);display:flex;flex-direction:column;align-items:flex-start;gap:var(--s2);flex:1;text-align:left}
+.body h2{font-size:20px;line-height:26px;min-height:52px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.desc{font-size:14px;line-height:22px;color:var(--mute);flex:1;margin:0;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.price{font:700 24px/32px var(--serif);color:var(--b);margin-top:var(--s1)}
+.sub{order:-1;display:flex;align-items:center;justify-content:space-between;gap:var(--s2);width:100%;font-size:13px;line-height:20px}
+.sub span:first-child{background:var(--tint);color:var(--b);font-weight:600;padding:2px 12px;border-radius:999px}
+.sub .stock{font-weight:500;color:var(--mute)}
+.sub .stock::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--ok);margin-right:6px}
+.stock.low::before{background:var(--gold)!important}
+.stock.out::before{background:var(--err)!important}
+.stock.out,.stock.low{font-weight:700;color:var(--ink)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:var(--s2);border:1px solid var(--b);border-radius:12px;padding:var(--s2) var(--s4);font-weight:600;font-size:15px;cursor:pointer;text-decoration:none;background:var(--b);color:var(--w);min-height:var(--s7);transition:background .15s,color .15s,border-color .15s}
+.btn:hover{background:var(--b2);border-color:var(--b2)}
+.card .btn{width:100%;margin-top:var(--s2)}
+.btn.alt{background:var(--w);color:var(--b)}
+.btn.alt:hover{background:var(--tint);border-color:var(--b)}
+.btn.danger{background:var(--w);color:var(--err);border-color:var(--err)}
+.btn.danger:hover{background:#fbeeea;border-color:var(--err)}
+.btn.sm{padding:var(--s1) var(--s3);min-height:var(--s6);font-size:14px}
+.btn[aria-disabled="true"],.btn:disabled{cursor:not-allowed;background:var(--tint);color:var(--mute);border:1px dashed var(--line)}
+.empty{border:2px dashed var(--line);background:var(--w);border-radius:18px;padding:var(--s7) var(--s4);text-align:center;color:var(--mute)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--s3);margin-bottom:var(--s4)}
+@media(max-width:640px){.stats{grid-template-columns:1fr}}
+.stat{background:var(--w);border:1px solid var(--line);border-radius:18px;padding:var(--s4)}
+.stat b{display:block;font:700 40px/48px var(--serif);color:var(--b)}
+.stat span{font-size:14px;color:var(--mute)}
+.panel{background:var(--w);border:1px solid var(--line);border-radius:18px;padding:var(--s5);margin-bottom:var(--s4)}
+.panel h2{font-size:24px;line-height:32px;margin-bottom:var(--s3)}
+.form{display:grid;grid-template-columns:1fr 1fr;gap:var(--s2) var(--s4)}
+.form .full{grid-column:1/-1}
+@media(max-width:640px){.form{grid-template-columns:1fr}.panel{padding:var(--s4)}}
+label{display:block;font-weight:600;font-size:15px;margin-bottom:var(--s2)}
+.err{color:var(--err);font-size:14px;font-weight:600;margin:var(--s1) 0 0;min-height:var(--s4)}
+.err:not(:empty)::before{content:"Perhatian: "}
+.chk{display:flex;align-items:center;gap:var(--s2);font-weight:400}
+.chk input{width:20px;height:20px}
+.row-actions{display:flex;gap:var(--s2);flex-wrap:wrap;margin-top:var(--s2)}
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:14px}
+table{width:100%;border-collapse:collapse;min-width:600px}
+th,td{text-align:left;padding:12px var(--s3);border-bottom:1px solid var(--line);vertical-align:middle;font-size:15px}
+th{background:var(--tint);color:var(--b);font-weight:700;font-size:14px}
+tbody tr:last-child td{border-bottom:0}
+tbody tr:hover{background:var(--paper)}
+.act-wrap{display:flex;gap:var(--s2);white-space:nowrap}
+.note{margin:var(--s2) 0 0;font-size:14px;color:var(--mute)}
+dialog{border:0;border-radius:20px;background:var(--w);color:var(--ink);padding:var(--s5);max-width:420px;width:calc(100% - var(--s5));box-shadow:0 24px 60px rgba(42,26,16,.35)}
+dialog h2{font-size:24px}
+dialog p{margin:var(--s2) 0 var(--s4);color:var(--mute)}
+dialog::backdrop{background:rgba(42,26,16,.55);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px)}
+#toast{position:fixed;left:50%;bottom:calc(var(--s4) + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:#f6ede2;padding:12px var(--s4);border-radius:14px;font-size:15px;z-index:20;max-width:90%;box-shadow:0 12px 32px rgba(42,26,16,.3)}
+#toast[hidden]{display:none}
+.foot{background:var(--ink);color:#cdb9a3;font-size:14px;line-height:22px;padding:var(--s5) 0}
+.foot .wrap{max-width:760px}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+.sr{position:absolute;width:var(--s1);height:var(--s1);margin:calc(-1 * var(--s1));overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.plain{font-family:inherit;min-height:96px}
+[aria-invalid="true"]{border:2px solid var(--err)!important}
+h1:focus{outline:none}
+input[type=file]{width:100%;font-size:14px}
+.thumb{width:var(--s6);height:var(--s6);border-radius:10px;object-fit:cover;vertical-align:middle;margin-right:var(--s2);border:1px solid var(--line)}
+.prev{display:block;max-width:192px;max-height:144px;border-radius:12px;border:1px solid var(--line);margin:var(--s2) 0}
+</style>
+</head>
+<body>
+<div class="strip">Prototipe NistoKopi. Seluruh data produk adalah contoh fiktif.</div>
+<header class="top"><div class="wrap">
+  <span class="brand">NistoKopi</span>
+  <nav aria-label="Navigasi utama">
+    <a href="#katalog" id="nav-katalog">Katalog</a>
+    <a href="#dashboard" id="nav-dashboard">Dashboard</a>
+  </nav>
+</div></header>
+
+<main class="wrap">
+<section id="view-katalog" class="view" aria-labelledby="h-katalog">
+  <p class="crumbs"><a href="#katalog">Home</a><span aria-hidden="true">›</span><span>Katalog</span><span aria-hidden="true">›</span><span aria-current="page">Biji Kopi</span></p>
+  <div class="hero">
+    <h1 id="h-katalog" tabindex="-1">Biji Kopi Banyuwangi</h1>
+    <p>Biji kopi Robusta, Arabika Ijen, dan specialty khas Banyuwangi. Pilih produk, lalu kirim pesanan langsung ke penjual lewat WhatsApp.</p>
+  </div>
+  <fieldset class="catbar"><legend class="sr">Kategori</legend><div id="cat-list"></div></fieldset>
+  <p class="count" id="count" aria-live="polite"></p>
+  <div class="toolbar">
+    <div class="qbox"><label for="q" class="sr">Cari produk</label><input type="search" id="q" autocomplete="off" placeholder="Cari nama atau deskripsi produk"></div>
+    <label class="chk"><input type="checkbox" id="f-avail"> Hanya yang tersedia</label>
+    <div class="sortbox"><label for="sort">Urutkan</label>
+      <select id="sort">
+        <option value="nama">Nama A–Z</option>
+        <option value="murah">Harga termurah</option>
+        <option value="mahal">Harga termahal</option>
+        <option value="unggulan">Unggulan dulu</option>
+      </select></div>
+  </div>
+  <div class="grid" id="grid"></div>
+</section>
+
+<section id="view-dashboard" class="view" aria-labelledby="h-dash" hidden>
+  <div class="hero"><h1 id="h-dash" tabindex="-1">Dashboard pengelola</h1>
+    <p>Kelola produk yang tampil di katalog. Perubahan langsung tampil di halaman Katalog. Prototipe ini belum memakai login; versi nyata perlu akses khusus pengelola.</p></div>
+  <div class="stats">
+    <div class="stat"><b id="s-prod">0</b><span>Total produk</span></div>
+    <div class="stat"><b id="s-stok">0</b><span>Total stok</span></div>
+    <div class="stat"><b id="s-kat">0</b><span>Kategori aktif</span></div>
+  </div>
+
+  <div class="panel">
+    <h2>Nomor WhatsApp penjual</h2>
+    <form id="wform" novalidate style="display:grid;gap:8px;max-width:416px">
+      <div><label for="wa-num">Nomor WhatsApp</label><input type="text" id="wa-num" inputmode="tel" autocomplete="off" placeholder="0812-3456-7890" aria-describedby="e-wa wa-note"><p class="err" id="e-wa" aria-live="polite"></p></div>
+      <p class="note" id="wa-note" style="margin:0"></p>
+      <div class="row-actions"><button class="btn" type="submit">Simpan nomor</button></div>
+    </form>
+  </div>
+
+  <div class="panel">
+    <h2 id="form-title">Tambah produk</h2>
+    <form class="form" id="pform" novalidate>
+      <div><label for="p-name">Nama produk</label><input type="text" id="p-name" aria-required="true" aria-describedby="e-name" maxlength="80"><p class="err" id="e-name" aria-live="polite"></p></div>
+      <div><label for="p-cat">Kategori</label><input type="text" id="p-cat" aria-required="true" aria-describedby="e-cat" list="cats" maxlength="40"><datalist id="cats"></datalist><p class="err" id="e-cat" aria-live="polite"></p></div>
+      <div><label for="p-price">Harga (Rp)</label><input type="number" id="p-price" aria-required="true" aria-describedby="e-price" min="0" max="1000000000" step="500"><p class="err" id="e-price" aria-live="polite"></p></div>
+      <div><label for="p-stock">Stok</label><input type="number" id="p-stock" aria-required="true" aria-describedby="e-stock" min="0" max="1000000" step="1"><p class="err" id="e-stock" aria-live="polite"></p></div>
+      <div class="full"><label for="p-desc">Deskripsi</label><textarea id="p-desc" aria-required="true" aria-describedby="e-desc" maxlength="240" class="plain"></textarea><p class="err" id="e-desc" aria-live="polite"></p></div>
+      <div class="full"><label for="p-img">Foto produk (opsional)</label><input type="file" id="p-img" accept="image/jpeg,image/png,image/webp" aria-describedby="e-img img-note"><p class="note" id="img-note" style="margin:4px 0 0">JPG, PNG, atau WebP. Foto diperkecil otomatis (maks. 640 px) agar muat di penyimpanan browser.</p><p class="err" id="e-img" aria-live="polite"></p>
+        <div id="img-wrap" hidden><img id="img-prev" class="prev" alt="Pratinjau foto produk"><button class="btn alt sm" type="button" id="img-del">Hapus foto</button></div></div>
+      <div class="full"><label class="chk"><input type="checkbox" id="p-feat"> Tandai sebagai produk unggulan</label></div>
+      <div class="full row-actions">
+        <button class="btn" type="submit" id="p-submit">Simpan produk</button>
+        <button class="btn alt" type="button" id="p-cancel" hidden>Batal ubah</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="panel">
+    <h2>Daftar produk</h2>
+    <div class="tbl"><table><caption class="sr">Daftar produk di katalog</caption>
+      <thead><tr><th scope="col">Produk</th><th scope="col">Kategori</th><th scope="col">Harga</th><th scope="col">Stok</th><th scope="col">Aksi</th></tr></thead>
+      <tbody id="tbody"></tbody>
+    </table></div>
+    <div class="empty" id="tempty" hidden>Belum ada produk. Isi formulir di atas untuk menambah produk pertama.</div>
+  </div>
+
+  <div class="panel">
+    <h2>Data produk</h2>
+    <p class="note" style="margin-top:0">Data tersimpan di browser ini saja. Reset akan mengembalikan produk ke data contoh awal.</p>
+    <div class="row-actions"><button class="btn danger" id="b-reset" type="button">Reset data demo</button></div>
+  </div>
+</section>
+</main>
+
+<footer class="foot"><div class="wrap">Prototipe workshop Vibe Coding UMKM. Bukan sistem e-commerce: pemesanan diteruskan lewat WhatsApp dan data hanya tersimpan di browser ini. Nomor WhatsApp bawaan dan seluruh data produk adalah contoh fiktif; nomor bisa diganti lewat Dashboard.</div></footer>
+
+<dialog id="dlg" aria-labelledby="dlg-title"><h2 id="dlg-title">Konfirmasi</h2><p id="dlg-text"></p>
+  <div class="row-actions" style="justify-content:flex-end">
+    <button class="btn alt" id="dlg-no" type="button">Batal</button>
+    <button class="btn danger" id="dlg-yes" type="button">Ya, lanjutkan</button>
+  </div></dialog>
+<div id="toast" role="status" hidden></div>
+
+<script>
+(function(){
+  var DEFAULT_WA = '6281234567890'; // nomor contoh
+  var WA_KEY = 'nistokopi:wa:v1';
+  var WA_NUMBER = (function(){try{var v=localStorage.getItem(WA_KEY);if(v&&/^62\d{8,13}$/.test(v))return v}catch(e){}return DEFAULT_WA})();
+  var KEY = 'nistokopi:products:v1';
+  var ICONS = Object.assign(Object.create(null),{'robusta':'☕','arabika':'☕','specialty':'✨','paket':'🎁'});
+  var DEMO = [
+    {name:'Robusta Banyuwangi Medium Roast 250 g',description:'Biji kopi Robusta khas Banyuwangi, roasting medium, kemasan 250 g. Data contoh.',category:'Robusta',price:55000,stock:30,featured:true},
+    {name:'Robusta Banyuwangi Dark Roast 250 g',description:'Biji kopi Robusta khas Banyuwangi, roasting dark, kemasan 250 g. Data contoh.',category:'Robusta',price:55000,stock:22,featured:false},
+    {name:'Robusta Banyuwangi Biji Mentah 1 kg',description:'Biji kopi Robusta mentah (green bean) untuk disangrai sendiri, kemasan 1 kg. Data contoh.',category:'Robusta',price:90000,stock:5,featured:false},
+    {name:'Arabika Ijen Medium Roast 200 g',description:'Biji kopi Arabika Ijen, roasting medium, kemasan 200 g. Data contoh.',category:'Arabika',price:85000,stock:18,featured:true},
+    {name:'Arabika Ijen Light Roast 200 g',description:'Biji kopi Arabika Ijen, roasting light, kemasan 200 g. Data contoh.',category:'Arabika',price:85000,stock:0,featured:false},
+    {name:'Arabika Ijen Biji Mentah 500 g',description:'Biji kopi Arabika Ijen mentah (green bean), kemasan 500 g. Data contoh.',category:'Arabika',price:140000,stock:10,featured:false},
+    {name:'Specialty Banyuwangi 100 g',description:'Biji kopi kelas specialty, kemasan 100 g. Detail lot dan skor cupping belum tersedia. Data contoh.',category:'Specialty',price:120000,stock:12,featured:true},
+    {name:'Paket Cicip Biji Kopi 3 × 100 g',description:'Paket berisi Robusta, Arabika Ijen, dan specialty masing-masing 100 g. Data contoh.',category:'Paket',price:150000,stock:8,featured:false}
+  ];
+  var products = [], editingId = null, pendingConfirm = null, pendingImage = '';
+  var $ = function(id){return document.getElementById(id)};
+
+  function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+  function rp(n){return 'Rp' + Number(n).toLocaleString('id-ID')}
+  var seq=0;
+  function uid(){seq++;return 'p'+Date.now().toString(36)+seq.toString(36)+Math.random().toString(36).slice(2,5)}
+  function canonCat(c){var l=c.toLowerCase(),f=products.filter(function(p){return p.category.toLowerCase()===l})[0];return f?f.category:c}
+  function unify(list){var seen={};list.forEach(function(p){var k=p.category.toLowerCase();if(seen[k])p.category=seen[k];else seen[k]=p.category});return list}
+  /* Satu aturan validasi untuk data localStorage dan formulir */
+  function okImg(v){return typeof v==='string'&&v.length<=400000&&/^data:image\/(jpeg|png|webp);base64,[A-Za-z0-9+\/=]+$/.test(v)?v:''}
+  function clean(p,n){
+    n=n||'';
+    if(!p||typeof p!=='object'||Array.isArray(p))return {error:n+'harus berupa objek.'};
+    if(typeof p.name!=='string'||!p.name.trim())return {error:n+'“name” wajib berupa teks.'};
+    if(typeof p.category!=='string'||!p.category.trim())return {error:n+'“category” wajib berupa teks.'};
+    if(typeof p.description!=='string'||!p.description.trim())return {error:n+'“description” wajib berupa teks dan tidak boleh kosong.'};
+    if(typeof p.price!=='number'||!isFinite(p.price)||p.price<1||p.price>1e9||Math.floor(p.price)!==p.price)return {error:n+'“price” wajib berupa bilangan bulat lebih dari 0.'};
+    if(typeof p.stock!=='number'||!isFinite(p.stock)||p.stock<0||p.stock>1e6||Math.floor(p.stock)!==p.stock)return {error:n+'“stock” wajib berupa bilangan bulat 0 sampai 1.000.000.'};
+    if(p.featured!==undefined&&typeof p.featured!=='boolean')return {error:n+'“featured” harus true atau false.'};
+    return {data:{id:uid(),name:p.name.trim().slice(0,80),category:p.category.trim().slice(0,40),description:p.description.trim().slice(0,240),price:p.price,stock:p.stock,featured:!!p.featured,image:okImg(p.image)}};
+  }
+  function withIds(list){return list.map(function(p){var o=Object.assign({},p);o.id=uid();return o})}
+
+  function load(){
+    try{
+      var raw = localStorage.getItem(KEY);
+      if(raw){var arr = JSON.parse(raw); if(Array.isArray(arr)) return unify(arr.map(function(p){var r=clean(p);if(r.data&&p.id&&typeof p.id==='string')r.data.id=p.id;return r.data}).filter(Boolean));}
+    }catch(e){}
+    return withIds(DEMO);
+  }
+  function save(){try{localStorage.setItem(KEY, JSON.stringify(products));}catch(e){toast('Penyimpanan browser penuh atau tidak tersedia. Perkecil atau hapus foto, lalu coba lagi.')}}
+
+  var tt;
+  function toast(msg){var t=$('toast');t.textContent=msg;t.hidden=false;clearTimeout(tt);tt=setTimeout(function(){t.hidden=true},2600)}
+
+  function askConfirm(title,text,fn){
+    $('dlg-title').textContent=title;$('dlg-text').textContent=text;pendingConfirm=fn;
+    if($('dlg').showModal){$('dlg').showModal()}else if(window.confirm(text)){fn()}
+  }
+  $('dlg').addEventListener('close',function(){pendingConfirm=null});
+  $('dlg-no').onclick=function(){pendingConfirm=null;$('dlg').close()};
+  $('dlg-yes').onclick=function(){var f=pendingConfirm;pendingConfirm=null;$('dlg').close();if(f)f()};
+
+  /* ---------- Katalog ---------- */
+  function categories(){
+    var seen={};products.forEach(function(p){seen[p.category]=1});
+    return Object.keys(seen).sort(function(a,b){return a.localeCompare(b,'id')});
+  }
+  function getCat(){var r=document.querySelector('input[name="cat"]:checked');return r?r.value:''}
+  function fillCategories(){
+    var cats=categories(),cur=getCat();
+    if(cats.indexOf(cur)<0)cur='';
+    function row(v,t,n){return '<label class="chk"><input type="radio" name="cat" value="'+esc(v)+'"'+(v===cur?' checked':'')+'> '+esc(t)+'&nbsp;<span class="stock">('+n+')</span></label>'}
+    $('cat-list').innerHTML=row('','Semua',products.length)+cats.map(function(c){return row(c,c,products.filter(function(p){return p.category===c}).length)}).join('');
+    $('cats').innerHTML=cats.map(function(c){return '<option value="'+esc(c)+'">'}).join('');
+  }
+  function waLink(p){
+    var msg='Halo NistoKopi, saya ingin memesan '+p.name+' ('+rp(p.price)+'). Apakah masih tersedia?';
+    return 'https://wa.me/'+WA_NUMBER+'?text='+encodeURIComponent(msg);
+  }
+  function visible(){
+    var q=$('q').value.trim().toLowerCase(),cat=getCat(),s=$('sort').value;
+    var list=products.filter(function(p){
+      if(cat&&p.category!==cat)return false;
+      if($('f-avail').checked&&p.stock<=0)return false;
+      return !q||(p.name+' '+p.description).toLowerCase().indexOf(q)>-1;
+    });
+    list.sort(function(a,b){
+      if(s==='murah')return a.price-b.price;
+      if(s==='mahal')return b.price-a.price;
+      if(s==='unggulan'&&a.featured!==b.featured)return a.featured?-1:1;
+      return a.name.localeCompare(b.name,'id');
+    });
+    return list;
+  }
+  function renderCatalog(){
+    var list=visible();
+    $('count').textContent='Menampilkan '+list.length+' dari '+products.length+' produk';
+    if(!list.length){
+      $('grid').innerHTML='<div class="empty" style="grid-column:1/-1">'+(products.length?'Tidak ada produk yang cocok. Ubah kata kunci atau pilih kategori lain.<br><button class="btn alt sm" id="b-clear" type="button" style="margin-top:16px">Hapus filter</button>':'Katalog masih kosong. Tambahkan produk lewat <a href="#dashboard">Dashboard</a>.')+'</div>';
+      return;
+    }
+    $('grid').innerHTML=list.map(function(p){
+      var out=p.stock<=0,low=!out&&p.stock<=5,icon=ICONS[p.category.toLowerCase()]||'☕';
+      return '<article class="card"><div class="tile">'+(p.image?'<img src="'+esc(p.image)+'" alt="Foto '+esc(p.name)+'" loading="lazy">':'<span aria-hidden="true">'+icon+'</span>')+(p.featured?'<span class="badge">Unggulan</span>':'')+'</div>'+
+        '<div class="body"><h2>'+esc(p.name)+'</h2>'+
+        '<p class="desc">'+esc(p.description)+'</p>'+
+        '<span class="price">'+rp(p.price)+'</span>'+
+        '<div class="sub"><span>'+esc(p.category)+'</span><span class="stock'+(out?' out':low?' low':'')+'">'+(out?'Stok habis':low?'Stok tinggal '+p.stock:'Stok '+p.stock)+'</span></div>'+
+        (out?'<button class="btn" disabled aria-disabled="true">Tidak tersedia</button>'
+            :'<a class="btn" href="'+waLink(p)+'" target="_blank" rel="noopener noreferrer" aria-label="Pesan '+esc(p.name)+' lewat WhatsApp (buka di tab baru)">Pesan lewat WhatsApp</a>')+
+        '</div></article>';
+    }).join('');
+  }
+  $('grid').addEventListener('click',function(ev){
+    if(ev.target.id==='b-clear'){$('q').value='';$('f-avail').checked=false;var r0=document.querySelector('input[name="cat"]');if(r0)r0.checked=true;renderCatalog();$('q').focus()}
+  });
+
+  /* ---------- Dashboard ---------- */
+  function renderDash(){
+    $('s-prod').textContent=products.length;
+    $('s-stok').textContent=products.reduce(function(a,p){return a+p.stock},0).toLocaleString('id-ID');
+    $('s-kat').textContent=categories().length;
+    $('tempty').hidden=products.length>0;
+    $('tbody').innerHTML=products.map(function(p){
+      return '<tr><td>'+(p.image?'<img class="thumb" src="'+esc(p.image)+'" alt="">':'')+'<b>'+esc(p.name)+'</b>'+(p.featured?' <span class="stock">(unggulan)</span>':'')+'</td><td>'+esc(p.category)+'</td><td>'+rp(p.price)+'</td>'+
+        '<td class="'+(p.stock<=0?'stock out':'')+'">'+(p.stock<=0?'Habis':p.stock)+'</td>'+
+        '<td><div class="act-wrap"><button class="btn alt sm" data-edit="'+esc(p.id)+'" type="button" aria-label="Ubah '+esc(p.name)+'">Ubah</button><button class="btn danger sm" data-del="'+esc(p.id)+'" type="button" aria-label="Hapus '+esc(p.name)+'">Hapus</button></div></td></tr>';
+    }).join('');
+  }
+  function renderAll(){fillCategories();renderCatalog();renderDash()}
+
+  function clearErrors(){['name','cat','price','stock','desc'].forEach(function(k){$('e-'+k).textContent='';$('p-'+k).removeAttribute('aria-invalid')})}
+  function resetForm(){
+    editingId=null;$('pform').reset();clearErrors();setImage('');
+    $('form-title').textContent='Tambah produk';$('p-submit').textContent='Simpan produk';$('p-cancel').hidden=true;
+  }
+  $('pform').addEventListener('submit',function(ev){
+    ev.preventDefault();clearErrors();
+    var name=$('p-name').value.trim(),cat=canonCat($('p-cat').value.trim()),desc=$('p-desc').value.trim();
+    var price=$('p-price').value===''?NaN:Number($('p-price').value),stock=$('p-stock').value===''?NaN:Number($('p-stock').value);
+    var bad=[];
+    function fail(k,msg){$('e-'+k).textContent=msg;$('p-'+k).setAttribute('aria-invalid','true');bad.push('p-'+k)}
+    if(!name)fail('name','Isi nama produk.');
+    else if(products.some(function(p){return p.id!==editingId&&p.name.toLowerCase()===name.toLowerCase()}))fail('name','Nama produk sudah ada. Gunakan nama yang berbeda.');
+    if(!cat)fail('cat','Isi kategori, misalnya Arabika.');
+    if(!isFinite(price)||price<1||price>1e9||Math.floor(price)!==price)fail('price','Isi harga dengan bilangan bulat lebih dari 0.');
+    if(!isFinite(stock)||stock<0||stock>1e6||Math.floor(stock)!==stock)fail('stock','Isi stok dengan bilangan bulat 0 sampai 1.000.000.');
+    if(!desc)fail('desc','Isi deskripsi singkat produk.');
+    if(bad.length){$(bad[0]).focus();return}
+    var data={name:name,category:cat,description:desc,price:price,stock:stock,featured:$('p-feat').checked,image:pendingImage};
+    if(editingId){
+      products=products.map(function(p){return p.id===editingId?Object.assign({},p,data):p});
+      toast('Produk diperbarui.');
+    }else{
+      data.id=uid();products.push(data);toast('Produk ditambahkan.');
+    }
+    save();resetForm();renderAll();
+  });
+  $('p-cancel').onclick=resetForm;
+  $('tbody').addEventListener('click',function(ev){
+    var e=ev.target.closest('button');if(!e)return;
+    var id=e.getAttribute('data-edit')||e.getAttribute('data-del');
+    var p=products.filter(function(x){return x.id===id})[0];if(!p)return;
+    if(e.hasAttribute('data-edit')){
+      editingId=id;$('p-name').value=p.name;$('p-cat').value=p.category;$('p-price').value=p.price;$('p-stock').value=p.stock;
+      $('p-desc').value=p.description;$('p-feat').checked=!!p.featured;setImage(p.image||'');$('e-img').textContent='';
+      $('form-title').textContent='Ubah produk';$('p-submit').textContent='Simpan perubahan';$('p-cancel').hidden=false;
+      $('p-name').focus();$('form-title').scrollIntoView({block:'start'});
+    }else{
+      askConfirm('Hapus produk?','“'+p.name+'” akan dihapus dari katalog. Tindakan ini tidak dapat dibatalkan.',function(){
+        products=products.filter(function(x){return x.id!==id});
+        if(editingId===id)resetForm();
+        save();renderAll();toast('Produk dihapus.');
+      });
+    }
+  });
+
+  function setImage(v){pendingImage=v;$('img-wrap').hidden=!v;if(v)$('img-prev').src=v;else $('img-prev').removeAttribute('src')}
+  $('img-del').onclick=function(){setImage('');$('p-img').value='';$('e-img').textContent='';$('p-img').focus()};
+  $('p-img').addEventListener('change',function(){
+    var inp=this,f=inp.files[0],er=$('e-img');er.textContent='';if(!f)return;
+    function fail(m){er.textContent=m;inp.value=''}
+    if(!/^image\/(jpeg|png|webp)$/.test(f.type))return fail('Pilih file JPG, PNG, atau WebP.');
+    if(f.size>8*1024*1024)return fail('Ukuran file maksimal 8 MB.');
+    var rd=new FileReader();
+    rd.onerror=function(){fail('File tidak bisa dibaca.')};
+    rd.onload=function(){
+      var im=new Image();
+      im.onerror=function(){fail('File gambar tidak bisa dibuka.')};
+      im.onload=function(){
+        var r=Math.min(1,640/Math.max(im.width,im.height)),c=document.createElement('canvas');
+        c.width=Math.max(1,Math.round(im.width*r));c.height=Math.max(1,Math.round(im.height*r));
+        var g=c.getContext('2d');g.fillStyle='#fff';g.fillRect(0,0,c.width,c.height);g.drawImage(im,0,0,c.width,c.height);
+        var out=c.toDataURL('image/jpeg',.75);
+        if(out.length>400000)return fail('Foto masih terlalu besar. Pilih foto lain.');
+        setImage(out);toast('Foto siap. Klik Simpan produk.');
+      };
+      im.src=rd.result;
+    };
+    rd.readAsDataURL(f);
+  });
+
+  /* ---------- Nomor WhatsApp ---------- */
+  function normWA(v){
+    var d=String(v).replace(/\D/g,'');
+    if(d.indexOf('620')===0)d='62'+d.slice(3);
+    else if(d.indexOf('0')===0)d='62'+d.slice(1);
+    else if(d.indexOf('8')===0)d='62'+d;
+    return /^62\d{8,13}$/.test(d)?d:'';
+  }
+  function renderWA(){
+    $('wa-num').value='0'+WA_NUMBER.slice(2);
+    $('wa-note').textContent=WA_NUMBER===DEFAULT_WA?'Saat ini masih nomor contoh. Ganti dengan nomor penjual sebelum dipakai.':'Pesanan dari katalog dikirim ke +'+WA_NUMBER+'.';
+  }
+  $('wform').addEventListener('submit',function(ev){
+    ev.preventDefault();
+    var n=normWA($('wa-num').value),i=$('wa-num');
+    if(!n){$('e-wa').textContent='Nomor tidak valid. Contoh: 0812-3456-7890 atau +62 812-3456-7890.';i.setAttribute('aria-invalid','true');i.focus();return}
+    i.removeAttribute('aria-invalid');$('e-wa').textContent='';WA_NUMBER=n;
+    var saved=true;try{localStorage.setItem(WA_KEY,n)}catch(e){saved=false}
+    renderWA();renderCatalog();
+    toast(saved?'Nomor WhatsApp disimpan.':'Nomor berlaku sekarang, tetapi tidak bisa disimpan di browser ini.');
+  });
+
+  /* ---------- Reset ---------- */
+  $('b-reset').onclick=function(){
+    askConfirm('Reset data demo?','Semua perubahan akan hilang dan data kembali ke contoh awal.',function(){
+      products=withIds(DEMO);save();resetForm();renderAll();toast('Data demo dikembalikan.');
+    });
+  };
+
+  /* ---------- Navigasi hash ---------- */
+  var firstRoute=true;
+  function route(){
+    var dash=location.hash==='#dashboard';
+    $('view-katalog').hidden=dash;$('view-dashboard').hidden=!dash;
+    var on=dash?$('nav-dashboard'):$('nav-katalog'),off=dash?$('nav-katalog'):$('nav-dashboard');
+    on.setAttribute('aria-current','page');off.removeAttribute('aria-current');
+    document.title=(dash?'Dashboard':'Katalog')+' – NistoKopi';
+    window.scrollTo(0,0);
+    if(!firstRoute)(dash?$('h-dash'):$('h-katalog')).focus();
+    firstRoute=false;
+  }
+  window.addEventListener('hashchange',route);
+  ['q','sort','f-avail'].forEach(function(id){$(id).addEventListener(id==='q'?'input':'change',renderCatalog)});
+  $('cat-list').addEventListener('change',renderCatalog);
+
+  products=load();
+  renderAll();renderWA();route();
+})();
+</script>
+</body>
+</html>
