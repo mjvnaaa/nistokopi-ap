@@ -2,8 +2,9 @@ import type { Metadata, Viewport } from "next";
 import { Suspense } from "react";
 import { Figtree, Fraunces } from "next/font/google";
 import Link from "next/link";
-import { MainNav } from "@/components/MainNav";
+import { HeaderNav } from "@/components/HeaderNav";
 import "./globals.css";
+import "./dashboard.css";
 
 const sans = Figtree({
   subsets: ["latin"],
@@ -49,14 +50,16 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             </Link>
             <Suspense
               fallback={
-                <nav className="main" aria-label="Navigasi utama">
-                  <Link href="/" aria-current="page">
-                    Katalog
-                  </Link>
-                </nav>
+                <div className="top-right">
+                  <nav className="main" aria-label="Navigasi utama">
+                    <Link href="/" aria-current="page">
+                      Katalog
+                    </Link>
+                  </nav>
+                </div>
               }
             >
-              <MainNav />
+              <HeaderNav />
             </Suspense>
           </div>
         </header>
