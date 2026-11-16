@@ -23,3 +23,13 @@ export function stockStatus(stock: number): { level: "ok" | "low" | "out"; label
   if (stock <= 5) return { level: "low", label: `Stok tinggal ${stock}` };
   return { level: "ok", label: `Stok ${stock}` };
 }
+
+/** Hanya izinkan pengalihan ke tautan wa.me yang sah (mencegah open redirect). */
+export function isSafeWaLink(value: string): boolean {
+  try {
+    const url = new URL(value);
+    return url.protocol === "https:" && url.hostname === "wa.me" && /^\/62\d{8,13}$/.test(url.pathname);
+  } catch {
+    return false;
+  }
+}

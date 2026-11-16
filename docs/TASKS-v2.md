@@ -50,11 +50,11 @@ Turunan dari `SPEC-v2.md` dan `UI-SPEC-v2.md`. Pakai cara kerja yang sama dengan
 
 | ID | Tugas | Cara memeriksa | Status |
 |---|---|---|---|
-| T-V2-17 | Token CSS v1 (`UI-SPEC.md` bagian 2), huruf lewat `next/font`, kerangka halaman dan menu per peran. | Tampilan sesuai `UI-SPEC-v2.md` bagian 1. | [ ] |
-| T-V2-18 | Query katalog: hanya produk terlihat publik (`isProductPubliclyVisible`), cari, filter kategori, tersedia, toko, urut, paginasi 24. Parameter di URL. | Tes: produk seller `PENDING`, nonaktif, dan disembunyikan tidak muncul. | [ ] |
-| T-V2-19 | Halaman katalog: hero, pill kategori, bilah alat, kartu produk (toko, rating). | Sesuai UI-SPEC bagian 4 dan 3. | [ ] |
-| T-V2-20 | Halaman toko `/toko/[slug]` dan halaman produk `/produk/[id]`. Produk tak terlihat publik menghasilkan 404. | Tautan langsung ke produk tersembunyi menampilkan 404. | [ ] |
-| T-V2-21 | Endpoint klik WhatsApp: catat `OrderClick`, lalu buka `waLink` ke nomor toko. Gagal mencatat tidak menghalangi. | Klik menambah satu baris klik, tautan tetap terbuka saat database gagal. | [ ] |
+| T-V2-17 | Token CSS v1 (`UI-SPEC.md` bagian 2), huruf lewat `next/font`, kerangka halaman dan menu per peran. | Tampilan sesuai `UI-SPEC-v2.md` bagian 1. | [x] |
+| T-V2-18 | Query katalog: hanya produk terlihat publik (`isProductPubliclyVisible`), cari, filter kategori, tersedia, toko, urut, paginasi 24. Parameter di URL. | Tes: produk seller `PENDING`, nonaktif, dan disembunyikan tidak muncul. | [x] |
+| T-V2-19 | Halaman katalog: hero, pill kategori, bilah alat, kartu produk (toko, rating). | Sesuai UI-SPEC bagian 4 dan 3. | [x] |
+| T-V2-20 | Halaman toko `/toko/[slug]` dan halaman produk `/produk/[id]`. Produk tak terlihat publik menghasilkan 404. | Tautan langsung ke produk tersembunyi menampilkan 404. | [x] |
+| T-V2-21 | Endpoint klik WhatsApp: catat `OrderClick`, lalu buka `waLink` ke nomor toko. Gagal mencatat tidak menghalangi. | Klik menambah satu baris klik, tautan tetap terbuka saat database gagal. | [x] |
 
 ## Fase 5. Pembeli
 
