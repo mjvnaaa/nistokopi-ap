@@ -70,7 +70,7 @@ Turunan dari `SPEC-v2.md` dan `UI-SPEC-v2.md`. Pakai cara kerja yang sama dengan
 | T-V2-24 | Banner status dan dashboard sesuai status seller (`PENDING`, `REJECTED`, `SUSPENDED`, `APPROVED`). | Empat status menampilkan perilaku berbeda sesuai SLR-05. | [ ] |
 | T-V2-25 | Profil toko: nama, deskripsi, kota, WhatsApp (normalisasi dan validasi), slug unik. | Nomor tidak valid ditolak dengan pesan contoh format. | [ ] |
 | T-V2-26 | CRUD produk milik sendiri: server action dengan `canEditProduct` dan validasi Zod. Nama unik per seller tanpa peduli huruf. | Seller A yang mengirim `id` produk seller B ditolak. Diuji otomatis. | [ ] |
-| T-V2-27 | Unggah foto ke Vercel Blob: cek jenis dari isi berkas, maks. 2 MB, hapus foto lama saat diganti. | Berkas bukan gambar dan berkas besar ditolak. | [ ] |
+| T-V2-27 | Unggah foto ke Vercel Blob: cek jenis dari isi berkas, maks. 2 MB, hapus foto lama saat diganti. | Berkas bukan gambar dan berkas besar ditolak. | [~] |
 | T-V2-28 | Statistik toko: jumlah produk, total stok, klik 7 dan 30 hari, ulasan masuk. | Angka cocok dengan data seed. | [ ] |
 
 ## Fase 7. Admin

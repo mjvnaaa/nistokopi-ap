@@ -51,6 +51,7 @@ async function Content({ params }: { params: Promise<{ id: string }> }) {
             stock: product.stock,
             featured: product.featured,
             isActive: product.isActive,
+            imageUrl: product.imageUrl,
           }}
         />
       </section>

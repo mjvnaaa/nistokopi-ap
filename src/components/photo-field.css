@@ -1,0 +1,48 @@
+/* Kolom unggah foto produk. Token dari globals.css. */
+
+.photo {
+  display: flex;
+  gap: var(--s4);
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.photo-preview {
+  width: 160px;
+  height: 160px;
+  flex: none;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--tint);
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  color: var(--mute);
+  font-size: 14px;
+  text-align: center;
+  padding: var(--s2);
+}
+
+.photo-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.photo-controls {
+  flex: 1 1 260px;
+  min-width: 0;
+}
+
+.photo-controls input[type="file"] {
+  width: 100%;
+  font-size: 15px;
+}
+
+.photo-status {
+  margin: var(--s2) 0 0;
+  font-weight: 600;
+  color: var(--b);
+  min-height: var(--s4);
+}

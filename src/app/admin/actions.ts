@@ -24,6 +24,7 @@ import {
   reviewNoteSchema,
 } from "@/lib/admin-rules";
 import { writeAudit } from "@/lib/audit";
+import { deleteBlobs } from "@/lib/blob";
 import { prisma } from "@/lib/db";
 import { Prisma } from "@/generated/prisma/client";
 import type { FlashCode } from "@/lib/admin-flash";
@@ -212,6 +213,7 @@ export async function hapusPenggunaAction(formData: FormData): Promise<void> {
   if (!id) back(formData, fallback, "gagal");
 
   let code: FlashCode;
+  let imagesToDelete: (string | null)[] = [];
   try {
     code = await prisma.$transaction(async (tx): Promise<FlashCode> => {
       const target = await tx.user.findUnique({ where: { id }, select: { id: true, name: true, role: true } });
@@ -219,6 +221,10 @@ export async function hapusPenggunaAction(formData: FormData): Promise<void> {
 
       const activeAdmins = await tx.user.count({ where: { role: "ADMIN", status: "ACTIVE" } });
       if (!canDeleteUser(actor, target, activeAdmins)) return "pengguna-ditolak";
+
+      // Foto semua produk toko pengguna ini ikut dibersihkan dari Blob setelah penghapusan berhasil.
+      const photos = await tx.product.findMany({ where: { seller: { userId: id }, imageUrl: { not: null } }, select: { imageUrl: true } });
+      imagesToDelete = photos.map((photo) => photo.imageUrl);
 
       // Sesi, akun, toko, produk, favorit, dan ulasan ikut terhapus (cascade). Klik dan log tetap, pelaku jadi kosong.
       await tx.user.delete({ where: { id } });
@@ -236,6 +242,7 @@ export async function hapusPenggunaAction(formData: FormData): Promise<void> {
     code = "gagal";
   }
 
+  if (code === "pengguna-dihapus") await deleteBlobs(imagesToDelete);
   back(formData, fallback, code);
 }
 
@@ -440,10 +447,15 @@ export async function hapusProdukAdminAction(formData: FormData): Promise<void> 
   if (!canModerateProduct(actor) || !id) back(formData, fallback, "gagal");
 
   let code: FlashCode;
+  let imageToDelete: string | null = null;
   try {
     code = await prisma.$transaction(async (tx): Promise<FlashCode> => {
-      const product = await tx.product.findUnique({ where: { id }, select: { id: true, name: true, seller: { select: { storeName: true } } } });
+      const product = await tx.product.findUnique({
+        where: { id },
+        select: { id: true, name: true, imageUrl: true, seller: { select: { storeName: true } } },
+      });
       if (!product) return "tidak-ditemukan";
+      imageToDelete = product.imageUrl;
 
       // Favorit, ulasan, dan klik produk ikut terhapus (cascade).
       await tx.product.delete({ where: { id } });
@@ -461,6 +473,7 @@ export async function hapusProdukAdminAction(formData: FormData): Promise<void> 
     code = "gagal";
   }
 
+  if (code === "produk-dihapus") await deleteBlobs([imageToDelete]);
   back(formData, fallback, code);
 }
 

@@ -1,10 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { useActionState } from "react";
+import { useActionState, useEffect, useRef, useState } from "react";
 import { simpanProdukAction } from "@/app/seller/actions";
 import { Field, fieldProps } from "@/components/Field";
 import type { FormState } from "@/lib/form";
+import { IMAGE_ACCEPT, IMAGE_HINT, MAX_IMAGE_BYTES } from "@/lib/image";
+import "./photo-field.css";
 
 export interface ProductDefaults {
   id: string;
@@ -15,6 +17,7 @@ export interface ProductDefaults {
   stock: number;
   featured: boolean;
   isActive: boolean;
+  imageUrl?: string | null;
 }
 
 const empty: FormState = {};
@@ -29,6 +32,41 @@ export function ProductForm({
   const [state, action, pending] = useActionState(simpanProdukAction, empty);
   const v = state.values;
   const fe = (key: string) => state.fieldErrors?.[key]?.[0];
+
+  // Pratinjau foto pilihan. Pemeriksaan di peramban hanya kemudahan; server tetap memeriksa isi dan ukuran.
+  const fileRef = useRef<HTMLInputElement>(null);
+  const [preview, setPreview] = useState<string | null>(null);
+  const [fileError, setFileError] = useState<string | null>(null);
+  const [removePhoto, setRemovePhoto] = useState(false);
+
+  useEffect(() => () => {
+    if (preview) URL.revokeObjectURL(preview);
+  }, [preview]);
+
+  function onPickFile(event: React.ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
+    setPreview(null);
+    setFileError(null);
+    if (!file) return;
+
+    if (!(IMAGE_ACCEPT.split(",") as string[]).includes(file.type)) {
+      setFileError("Berkas bukan foto JPG, PNG, atau WebP. Pilih foto dengan jenis tersebut.");
+      event.target.value = "";
+      return;
+    }
+    if (file.size > MAX_IMAGE_BYTES) {
+      setFileError("Foto lebih dari 2 MB. Perkecil ukurannya, lalu pilih lagi.");
+      event.target.value = "";
+      return;
+    }
+
+    setRemovePhoto(false);
+    setPreview(URL.createObjectURL(file));
+  }
+
+  const hasNewFile = preview !== null;
+  const currentUrl = product?.imageUrl && !removePhoto ? product.imageUrl : null;
+  const shown = preview ?? currentUrl;
 
   return (
     <form action={action} className="form" noValidate>
@@ -72,13 +110,40 @@ export function ProductForm({
         </label>
       </div>
 
+      <div className="full">
+        <Field id="foto" label="Foto produk (opsional)" error={fileError ?? fe("foto")} hint={IMAGE_HINT}>
+          <div className="photo">
+            <div className="photo-preview">
+              {shown ? (
+                // eslint-disable-next-line @next/next/no-img-element -- pratinjau berkas lokal (blob:) dan URL Blob, tidak cocok untuk next/image.
+                <img src={shown} alt={hasNewFile ? "Pratinjau foto yang dipilih" : "Foto produk saat ini"} />
+              ) : (
+                <span>Belum ada foto</span>
+              )}
+            </div>
+            <div className="photo-controls">
+              <input {...fieldProps("foto", fileError ?? fe("foto"))} ref={fileRef} type="file" accept={IMAGE_ACCEPT} onChange={onPickFile} />
+              {product?.imageUrl && !hasNewFile ? (
+                <label className="chk">
+                  <input type="checkbox" name="hapusFoto" checked={removePhoto} onChange={(event) => setRemovePhoto(event.target.checked)} /> Hapus foto saat ini
+                </label>
+              ) : null}
+              <p className="photo-status" role="status">
+                {pending && hasNewFile ? "Mengunggah…" : ""}
+              </p>
+            </div>
+          </div>
+        </Field>
+        {state.error && !state.ok && fe("foto") ? <p className="note">Pilih ulang foto Anda setelah memperbaiki isian. Peramban tidak menyimpan pilihan berkas.</p> : null}
+      </div>
+
       <p className="err form-err full" role="alert">
         {state.error ?? ""}
       </p>
 
       <div className="full row-actions">
         <button className="btn" type="submit" disabled={pending}>
-          {pending ? "Menyimpan…" : "Simpan produk"}
+          {pending ? (hasNewFile ? "Mengunggah…" : "Menyimpan…") : "Simpan produk"}
         </button>
         <Link className="btn alt" href="/seller">
           Batal
