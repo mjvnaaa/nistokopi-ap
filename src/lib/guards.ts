@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { getActor } from "@/lib/actor";
-import { canAccessSellerArea } from "@/lib/authz";
+import { canAccessAdminArea, canAccessSellerArea } from "@/lib/authz";
 import { prisma } from "@/lib/db";
 
 /**
@@ -17,4 +17,17 @@ export async function requireSeller(returnTo = "/seller") {
   if (!profile) redirect("/akses-ditolak?untuk=penjual");
 
   return { actor, profile };
+}
+
+/**
+ * Gerbang area admin untuk setiap halaman (bukan hanya proxy). Tamu atau sesi habis ke Masuk,
+ * peran lain atau akun tidak aktif ke halaman "tidak berhak". Peran dibaca dari database (getActor).
+ */
+export async function requireAdmin(returnTo = "/admin") {
+  const actor = await getActor();
+
+  if (!actor) redirect(`/masuk?lanjut=${encodeURIComponent(returnTo)}&pesan=sesi`);
+  if (!canAccessAdminArea(actor)) redirect("/akses-ditolak?untuk=admin");
+
+  return actor;
 }

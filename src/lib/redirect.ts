@@ -10,5 +10,7 @@ export function safeNext(value: string | null | undefined): string {
 
 /** Halaman awal setelah masuk, menurut peran. */
 export function homeFor(role: Role): string {
-  return role === "SELLER" ? "/seller" : "/";
+  if (role === "SELLER") return "/seller";
+  if (role === "ADMIN") return "/admin";
+  return "/";
 }

@@ -44,9 +44,9 @@ describe("safeNext", () => {
 });
 
 describe("homeFor", () => {
-  it("seller ke dashboard, lainnya ke katalog", () => {
+  it("seller ke dashboard toko, admin ke dashboard admin, pembeli ke katalog", () => {
     expect(homeFor("SELLER")).toBe("/seller");
     expect(homeFor("BUYER")).toBe("/");
-    expect(homeFor("ADMIN")).toBe("/");
+    expect(homeFor("ADMIN")).toBe("/admin");
   });
 });

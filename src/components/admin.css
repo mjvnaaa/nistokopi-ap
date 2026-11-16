@@ -1,0 +1,187 @@
+/* Gaya area admin. Token dan komponen dasar tetap dari globals.css dan dashboard.css. */
+
+.subnav {
+  display: flex;
+  gap: var(--s2);
+  flex-wrap: wrap;
+  margin: 0 0 var(--s4);
+  padding: 0;
+  list-style: none;
+}
+
+.subnav a {
+  display: inline-block;
+  padding: var(--s2) var(--s3);
+  min-height: var(--s6);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--w);
+  color: var(--ink);
+  font-weight: 600;
+  font-size: 15px;
+  text-decoration: none;
+}
+
+.subnav a:hover {
+  border-color: var(--b);
+}
+
+.subnav a[aria-current="page"] {
+  background: var(--b);
+  border-color: var(--b);
+  color: #fff;
+}
+
+.subnav .count-chip {
+  font-weight: 400;
+  opacity: 0.85;
+}
+
+@media (max-width: 640px) {
+  .subnav {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: var(--s1);
+  }
+
+  .subnav a {
+    white-space: nowrap;
+  }
+}
+
+.flash.bad {
+  background: #f6dcd6;
+  color: var(--err);
+}
+
+.queue {
+  display: grid;
+  gap: var(--s3);
+}
+
+.app-card {
+  background: var(--w);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: var(--s4);
+}
+
+.app-card h3 {
+  margin: 0 0 var(--s1);
+  font: 700 22px/28px var(--font-serif), Georgia, serif;
+}
+
+.app-card h3 .tag {
+  vertical-align: middle;
+}
+
+.app-meta {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: var(--s2) var(--s4);
+  margin: var(--s3) 0;
+}
+
+.app-meta dt {
+  font-size: 13px;
+  color: var(--mute);
+}
+
+.app-meta dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.app-note {
+  margin: var(--s2) 0 0;
+  padding: var(--s2) var(--s3);
+  border-left: 4px solid var(--gold);
+  background: var(--paper);
+  border-radius: 8px;
+}
+
+.search-row {
+  display: flex;
+  gap: var(--s2);
+  flex-wrap: wrap;
+  align-items: flex-end;
+  margin-bottom: var(--s3);
+}
+
+.search-row .field {
+  flex: 1 1 220px;
+  min-width: 0;
+}
+
+.search-row select {
+  min-width: 160px;
+}
+
+.inline-form {
+  display: flex;
+  gap: var(--s2);
+  align-items: center;
+}
+
+.inline-form input[type="text"] {
+  min-width: 160px;
+}
+
+.cell-sub {
+  display: block;
+  font-size: 13px;
+  color: var(--mute);
+  overflow-wrap: anywhere;
+}
+
+.cell-clip {
+  max-width: 320px;
+  overflow-wrap: anywhere;
+}
+
+.tbl.wide table {
+  min-width: 880px;
+}
+
+.dash-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: var(--s3);
+  margin-bottom: var(--s4);
+}
+
+.dash-link {
+  display: block;
+  background: var(--w);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: var(--s4);
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.dash-link:hover {
+  border-color: var(--b);
+}
+
+.dash-link b {
+  display: block;
+  font: 700 20px/28px var(--font-serif), Georgia, serif;
+  color: var(--b);
+}
+
+.dash-link span {
+  color: var(--mute);
+  font-size: 15px;
+}
+
+.dialog-note textarea {
+  width: 100%;
+  min-height: 96px;
+  margin-bottom: var(--s1);
+}
+
+dialog .field {
+  margin-bottom: var(--s3);
+  text-align: left;
+}

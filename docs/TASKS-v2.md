@@ -77,11 +77,11 @@ Turunan dari `SPEC-v2.md` dan `UI-SPEC-v2.md`. Pakai cara kerja yang sama dengan
 
 | ID | Tugas | Cara memeriksa | Status |
 |---|---|---|---|
-| T-V2-29 | Antrean seller: setujui, tolak (catatan wajib), tangguhkan, aktifkan kembali. Semua ke audit log. | Setelah disetujui, produk seller muncul di katalog. | [ ] |
-| T-V2-30 | Manajemen pengguna: cari, ubah peran, aktif/nonaktif, hapus, dengan `canChangeUserRole`, `canSetUserStatus`, `canDeleteUser`. | Admin terakhir tidak dapat diturunkan, dinonaktifkan, atau dihapus. | [ ] |
-| T-V2-31 | Manajemen kategori: tambah, ubah, urutkan, hapus hanya jika tidak dipakai. | Menghapus kategori terpakai ditolak dengan pesan jelas. | [ ] |
-| T-V2-32 | Moderasi produk dan ulasan: sembunyikan, tampilkan, hapus. | Produk tersembunyi hilang dari katalog dan seller melihat penandanya. | [ ] |
-| T-V2-33 | Dashboard platform dan halaman audit log. | Angka cocok dengan data, log tidak dapat diubah dari aplikasi. | [ ] |
+| T-V2-29 | Antrean seller: setujui, tolak (catatan wajib), tangguhkan, aktifkan kembali. Semua ke audit log. | Setelah disetujui, produk seller muncul di katalog. | [~] |
+| T-V2-30 | Manajemen pengguna: cari, ubah peran, aktif/nonaktif, hapus, dengan `canChangeUserRole`, `canSetUserStatus`, `canDeleteUser`. | Admin terakhir tidak dapat diturunkan, dinonaktifkan, atau dihapus. | [~] |
+| T-V2-31 | Manajemen kategori: tambah, ubah, urutkan, hapus hanya jika tidak dipakai. | Menghapus kategori terpakai ditolak dengan pesan jelas. | [~] |
+| T-V2-32 | Moderasi produk dan ulasan: sembunyikan, tampilkan, hapus. | Produk tersembunyi hilang dari katalog dan seller melihat penandanya. | [~] |
+| T-V2-33 | Dashboard platform dan halaman audit log. | Angka cocok dengan data, log tidak dapat diubah dari aplikasi. | [~] |
 
 ## Fase 8. Keamanan dan mutu
 
